@@ -1,8 +1,7 @@
 import NextAuth from "next-auth"
 import type { NextAuthOptions } from "next-auth"
 
-export const authOptions: NextAuthOptions = {
-  // Configure providers: OAuth 2.0, SAML, etc.
+const authOptions: NextAuthOptions = {
   providers: [
     // OAuth 2.0 providers to be configured
     // SAML provider to be configured
