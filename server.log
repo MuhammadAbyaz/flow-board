@@ -1,0 +1,38 @@
+
+> flow-board@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use by an unknown process, using available port 3001 instead.
+   ▲ Next.js 15.5.23
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.100.21:3001
+
+ ✓ Starting...
+ ✓ Ready in 3.6s
+ ○ Compiling / ...
+ ⨯ ./src/styles/globals.css:19:3
+Syntax error: /home/muhammad-abyaz/btcms-work/repos/BOA5/src/styles/globals.css The `bg-background` class does not exist. If `bg-background` is a custom class, make sure it is defined within a `@layer` directive.
+
+  17 | 
+  18 | body {
+> 19 |   @apply bg-background text-foreground;
+     |   ^
+  20 | }
+  21 |
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|/home/muhammad-abyaz/btcms-work/repos/BOA5/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!/home/muhammad-abyaz/btcms-work/repos/BOA5/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!/home/muhammad-abyaz/btcms-work/repos/BOA5/src/styles/globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./src/styles/globals.css:19:3
+Syntax error: /home/muhammad-abyaz/btcms-work/repos/BOA5/src/styles/globals.css The `bg-background` class does not exist. If `bg-background` is a custom class, make sure it is defined within a `@layer` directive.
+
+  17 | 
+  18 | body {
+> 19 |   @apply bg-background text-foreground;
+     |   ^
+  20 | }
+  21 |
+ GET / 500 in 12412ms
+ ✓ Compiled /_error in 642ms (943 modules)
+ ✓ Compiled in 651ms (386 modules)
+ GET / 200 in 653ms
+ GET / 200 in 57ms
+ GET / 200 in 50ms
