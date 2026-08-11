@@ -53,14 +53,14 @@ export default function Home() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/(auth)/signup">
+              <Link href="/(dashboard)/board">
                 <Button size="lg" className="font-semibold px-8">
                   Get Started
                 </Button>
               </Link>
-              <Link href="/(auth)/login">
+              <Link href="/(dashboard)/board">
                 <Button size="lg" variant="outline" className="font-semibold px-8">
-                  Log In
+                  View Demo
                 </Button>
               </Link>
             </div>
