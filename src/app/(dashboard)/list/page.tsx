@@ -98,108 +98,112 @@ export default function ListView() {
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-4xl font-bold mb-2">List View</h1>
-      <p className="text-gray-600 mb-8">All your tasks in one place</p>
+    <div className="flex flex-col h-full">
+      <div className="px-8 pt-8 pb-4">
+        <h1 className="text-3xl font-bold mb-2">List View</h1>
+        <p className="text-muted-foreground mb-6">All your tasks in one place</p>
+      </div>
 
-      <div className="mb-8">
+      <div className="px-8 pb-6">
         <TaskForm creatorId={creatorId} onTaskCreated={fetchTasks} />
       </div>
 
-      {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <p className="text-gray-500">Loading tasks...</p>
-        </div>
-      ) : tasks.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500">No tasks yet. Create one to get started!</p>
-        </div>
-      ) : (
-        <div className="overflow-x-auto rounded-lg border border-gray-200">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                  Title
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                  Priority
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                  Assigned To
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                  Due Date
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {tasks.map((task) => (
-                <tr key={task.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 text-sm text-gray-900 font-medium max-w-xs truncate">
-                    {task.title}
-                  </td>
-                  <td className="px-6 py-4 text-sm">
-                    {editingId === task.id ? (
-                      <select
-                        value={editStatus}
-                        onChange={(e) => handleStatusChange(task.id, e.target.value)}
-                        className="px-2 py-1 border border-gray-300 rounded text-sm"
-                      >
-                        {statusOptions.map((status) => (
-                          <option key={status} value={status}>
-                            {status}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBgColor(task.status)}`}>
-                        {task.status}
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 text-sm">
-                    <span className={`font-semibold ${getPriorityColor(task.priority)}`}>
-                      {task.priority}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {task.assignedTo ? task.assignedTo.name || task.assignedTo.email : "-"}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">
-                    {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "-"}
-                  </td>
-                  <td className="px-6 py-4 text-sm">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          setEditingId(task.id)
-                          setEditStatus(task.status)
-                        }}
-                        className="p-1 hover:bg-gray-200 rounded"
-                      >
-                        <Edit2 className="w-4 h-4 text-gray-600" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(task.id)}
-                        className="p-1 hover:bg-gray-200 rounded"
-                      >
-                        <Trash2 className="w-4 h-4 text-gray-600 hover:text-red-600" />
-                      </button>
-                    </div>
-                  </td>
+      <div className="flex-1 overflow-y-auto px-8 pb-8">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-muted-foreground">Loading tasks...</p>
+          </div>
+        ) : tasks.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No tasks yet. Create one to get started!</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto rounded-lg border border-border">
+            <table className="w-full text-sm">
+              <thead className="bg-muted border-b border-border">
+                <tr>
+                  <th className="px-6 py-3 text-left font-semibold">
+                    Title
+                  </th>
+                  <th className="px-6 py-3 text-left font-semibold">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left font-semibold">
+                    Priority
+                  </th>
+                  <th className="px-6 py-3 text-left font-semibold">
+                    Assigned To
+                  </th>
+                  <th className="px-6 py-3 text-left font-semibold">
+                    Due Date
+                  </th>
+                  <th className="px-6 py-3 text-left font-semibold">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody className="divide-y divide-border">
+                {tasks.map((task) => (
+                  <tr key={task.id} className="hover:bg-muted/50 transition-colors">
+                    <td className="px-6 py-4 font-medium max-w-xs truncate">
+                      {task.title}
+                    </td>
+                    <td className="px-6 py-4">
+                      {editingId === task.id ? (
+                        <select
+                          value={editStatus}
+                          onChange={(e) => handleStatusChange(task.id, e.target.value)}
+                          className="px-2 py-1 border border-border rounded text-sm bg-background"
+                        >
+                          {statusOptions.map((status) => (
+                            <option key={status} value={status}>
+                              {status}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBgColor(task.status)}`}>
+                          {task.status}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`font-semibold ${getPriorityColor(task.priority)}`}>
+                        {task.priority}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-muted-foreground">
+                      {task.assignedTo ? task.assignedTo.name || task.assignedTo.email : "-"}
+                    </td>
+                    <td className="px-6 py-4 text-muted-foreground">
+                      {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "-"}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            setEditingId(task.id)
+                            setEditStatus(task.status)
+                          }}
+                          className="p-1 hover:bg-muted rounded"
+                        >
+                          <Edit2 className="w-4 h-4 text-muted-foreground" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(task.id)}
+                          className="p-1 hover:bg-muted rounded"
+                        >
+                          <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
