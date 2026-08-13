@@ -68,40 +68,46 @@ export default function BoardView() {
   const getTasksByStatus = (status: string) => tasks.filter((task) => task.status === status)
 
   return (
-    <div className="p-8">
-      <h1 className="text-4xl font-bold mb-2">Kanban Board</h1>
-      <p className="text-gray-600 mb-8">Manage your tasks across different statuses</p>
+    <div className="flex flex-col h-full">
+      <div className="px-8 pt-8 pb-4">
+        <h1 className="text-3xl font-bold mb-2">Kanban Board</h1>
+        <p className="text-muted-foreground mb-6">Manage your tasks across different statuses</p>
+      </div>
 
-      <div className="mb-8">
+      <div className="px-8 pb-6">
         <TaskForm creatorId={creatorId} onTaskCreated={fetchTasks} />
       </div>
 
-      {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <p className="text-gray-500">Loading tasks...</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {columns.map((column) => (
-            <div key={column.id} className={`${column.color} rounded-lg p-4 min-h-96`}>
-              <h2 className="font-semibold text-lg mb-4">
-                {column.label} ({getTasksByStatus(column.id).length})
-              </h2>
-              <div className="space-y-3">
-                {getTasksByStatus(column.id).map((task) => (
-                  <div key={task.id} onClick={() => handleStatusChange(task.id, column.id)}>
-                    <TaskCard
-                      task={task}
-                      onDelete={handleDelete}
-                      onStatusChange={() => handleStatusChange(task.id, column.id)}
-                    />
-                  </div>
-                ))}
+      <div className="flex-1 overflow-y-auto px-8 pb-8">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-muted-foreground">Loading tasks...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-max">
+            {columns.map((column) => (
+              <div key={column.id} className="flex flex-col">
+                <div className="bg-muted rounded-lg p-4 mb-4">
+                  <h2 className="font-semibold text-base">
+                    {column.label} <span className="text-muted-foreground">({getTasksByStatus(column.id).length})</span>
+                  </h2>
+                </div>
+                <div className="space-y-3">
+                  {getTasksByStatus(column.id).map((task) => (
+                    <div key={task.id} onClick={() => handleStatusChange(task.id, column.id)}>
+                      <TaskCard
+                        task={task}
+                        onDelete={handleDelete}
+                        onStatusChange={() => handleStatusChange(task.id, column.id)}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

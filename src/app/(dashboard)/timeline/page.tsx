@@ -92,103 +92,99 @@ export default function TimelineView() {
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-4xl font-bold mb-2">Timeline View</h1>
-      <p className="text-gray-600 mb-8">Track tasks by their due dates</p>
+    <div className="flex flex-col h-full">
+      <div className="px-8 pt-8 pb-4">
+        <h1 className="text-3xl font-bold mb-2">Timeline View</h1>
+        <p className="text-muted-foreground mb-6">Track tasks by their due dates</p>
+      </div>
 
-      <div className="mb-8">
+      <div className="px-8 pb-6">
         <TaskForm creatorId={creatorId} onTaskCreated={fetchTasks} />
       </div>
 
-      {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <p className="text-gray-500">Loading tasks...</p>
-        </div>
-      ) : Object.keys(groupedByDate).length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500">No tasks with due dates. Create one to get started!</p>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          {Object.entries(groupedByDate).map(([date, dateTasks]) => {
-            const isPast = new Date(date) < new Date()
-            const isToday =
-              new Date(date).toLocaleDateString() === new Date().toLocaleDateString()
+      <div className="flex-1 overflow-y-auto px-8 pb-8">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-muted-foreground">Loading tasks...</p>
+          </div>
+        ) : Object.keys(groupedByDate).length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No tasks with due dates. Create one to get started!</p>
+          </div>
+        ) : (
+          <div className="space-y-8 max-w-4xl">
+            {Object.entries(groupedByDate).map(([date, dateTasks]) => {
+              const isPast = new Date(date) < new Date()
+              const isToday =
+                new Date(date).toLocaleDateString() === new Date().toLocaleDateString()
 
-            return (
-              <div key={date} className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`px-4 py-2 rounded-lg font-semibold ${
-                      isPast && !isToday
-                        ? "bg-gray-100 text-gray-600"
-                        : isToday
-                          ? "bg-blue-100 text-blue-600"
-                          : "bg-slate-100 text-slate-600"
-                    }`}
-                  >
-                    {isToday ? "Today" : isPast ? "Past Due" : date}
-                  </div>
-                  <span className="text-sm text-gray-500">{dateTasks.length} tasks</span>
-                </div>
-
-                <div className="space-y-2">
-                  {dateTasks.map((task) => (
-                    <Card
-                      key={task.id}
-                      className={`border-l-4 cursor-pointer hover:shadow-md transition-shadow ${getStatusColor(task.status)}`}
+              return (
+                <div key={date}>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className={`px-4 py-2 rounded-lg font-semibold text-sm ${
+                        isPast && !isToday
+                          ? "bg-muted text-muted-foreground"
+                          : isToday
+                            ? "bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400"
+                            : "bg-muted text-muted-foreground"
+                      }`}
                     >
-                      <CardHeader className="pb-2">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex-1">
-                            <CardTitle className="text-base">{task.title}</CardTitle>
-                            {task.description && (
-                              <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                                {task.description}
-                              </p>
-                            )}
+                      {isToday ? "Today" : isPast ? "Past Due" : date}
+                    </div>
+                    <span className="text-sm text-muted-foreground">{dateTasks.length} task{dateTasks.length !== 1 ? 's' : ''}</span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {dateTasks.map((task) => (
+                      <Card
+                        key={task.id}
+                        className="border-l-4 cursor-pointer hover:shadow-md transition-shadow"
+                      >
+                        <CardHeader className="pb-2">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex-1">
+                              <CardTitle className="text-base">{task.title}</CardTitle>
+                              {task.description && (
+                                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                                  {task.description}
+                                </p>
+                              )}
+                            </div>
+                            <button
+                              onClick={() => handleDelete(task.id)}
+                              className="p-1 hover:bg-muted rounded"
+                            >
+                              <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive" />
+                            </button>
                           </div>
-                          <button
-                            onClick={() => handleDelete(task.id)}
-                            className="p-1 hover:bg-gray-200 rounded"
-                          >
-                            <Trash2 className="w-4 h-4 text-gray-500 hover:text-red-600" />
-                          </button>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="flex items-center justify-between flex-wrap gap-2">
-                        <div className="flex items-center gap-3">
-                          <span
-                            className={`text-xs px-2 py-1 rounded-full font-medium ${
-                              task.status === "todo"
-                                ? "bg-gray-200 text-gray-700"
-                                : task.status === "in-progress"
-                                  ? "bg-blue-200 text-blue-700"
-                                  : task.status === "done"
-                                    ? "bg-green-200 text-green-700"
-                                    : "bg-red-200 text-red-700"
-                            }`}
-                          >
-                            {task.status}
-                          </span>
-                          <span className={`text-xs font-semibold ${getPriorityColor(task.priority)}`}>
-                            {task.priority}
-                          </span>
-                        </div>
-                        {task.assignedTo && (
-                          <span className="text-xs text-blue-600 font-medium">
-                            {task.assignedTo.name || task.assignedTo.email}
-                          </span>
-                        )}
-                      </CardContent>
-                    </Card>
-                  ))}
+                        </CardHeader>
+                        <CardContent className="flex items-center justify-between flex-wrap gap-2">
+                          <div className="flex items-center gap-3">
+                            <span
+                              className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(task.status)}`}
+                            >
+                              {task.status}
+                            </span>
+                            <span className={`text-xs font-semibold ${getPriorityColor(task.priority)}`}>
+                              {task.priority}
+                            </span>
+                          </div>
+                          {task.assignedTo && (
+                            <span className="text-xs font-medium text-blue-600 dark:text-blue-400">
+                              {task.assignedTo.name || task.assignedTo.email}
+                            </span>
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )
-          })}
-        </div>
-      )}
+              )
+            })}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
